@@ -1,3 +1,13 @@
+## [0.1.2](https://github.com/adamhl8/eslint-plugin-clean-modules/compare/v0.1.1..v0.1.2) - 2026-06-30
+
+### ⚙️ Miscellaneous Tasks
+
+- add release workflow by @adamhl8 ([75fd9d7](https://github.com/adamhl8/eslint-plugin-clean-modules/commit/75fd9d790a507e40942010341524c1f443f3c9a6))
+
+- add tests by @adamhl8 ([68a7d72](https://github.com/adamhl8/eslint-plugin-clean-modules/commit/68a7d72fb4e9b457936a8958d85bd2361e87f8ea))
+
+- _(deps)_ update deps by @adamhl8 ([a0dc4ec](https://github.com/adamhl8/eslint-plugin-clean-modules/commit/a0dc4ec57d4de0bc3f1e3055ecd70eb37a4fb07a))
+
 ## [0.1.1](https://github.com/adamhl8/eslint-plugin-clean-modules/compare/v0.1.0..v0.1.1) - 2026-06-30
 
 ### 📚 Documentation

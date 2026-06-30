@@ -1,6 +1,6 @@
 {
   "name": "@adamhl8/eslint-plugin-clean-modules",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "oxlint/ESLint plugin: require subpath imports, direct exports, and explicit import extensions",
   "keywords": [
     "eslint",
