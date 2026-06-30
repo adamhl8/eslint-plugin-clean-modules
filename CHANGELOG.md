@@ -1,3 +1,9 @@
+## [0.1.3](https://github.com/adamhl8/eslint-plugin-clean-modules/compare/v0.1.2..v0.1.3) - 2026-06-30
+
+### 🐛 Bug Fixes
+
+- detect directory imports by @adamhl8 ([00d15a2](https://github.com/adamhl8/eslint-plugin-clean-modules/commit/00d15a29a728abade3f0b17e0b2d224b4081f644))
+
 ## [0.1.2](https://github.com/adamhl8/eslint-plugin-clean-modules/compare/v0.1.1..v0.1.2) - 2026-06-30
 
 ### ⚙️ Miscellaneous Tasks
