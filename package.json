@@ -1,0 +1,71 @@
+{
+  "name": "@adamhl8/eslint-plugin-clean-modules",
+  "version": "0.0.0",
+  "description": "oxlint/ESLint plugin: require subpath imports, direct exports, and explicit import extensions",
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "lint",
+    "oxlint",
+    "subpath imports"
+  ],
+  "homepage": "https://github.com/adamhl8/eslint-plugin-clean-modules",
+  "bugs": {
+    "url": "https://github.com/adamhl8/eslint-plugin-clean-modules/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Adam Langbert",
+    "email": "adamhl@pm.me",
+    "url": "https://github.com/adamhl8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adamhl8/eslint-plugin-clean-modules.git"
+  },
+  "files": [
+    "dist/"
+  ],
+  "type": "module",
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "lint": "markdown-toc -i --bullets '-' --maxdepth 3 ./README.md && oxfmt && oxlint --fix --fix-suggestions --fix-dangerously && adamhl8-knip && nub run test",
+    "test": "vitest run",
+    "bump-deps": "nub update -L && rm -f lock.yaml && nub i && oxfmt lock.yaml",
+    "bundle": "nub run lint && tsdown",
+    "release": "release-it --ci -i \"$(adamhl8-cliff --bumped-version)\"",
+    "prepare": "lefthook install"
+  },
+  "dependencies": {
+    "@typescript-eslint/types": "^8.62.1",
+    "@typescript-eslint/utils": "^8.62.1"
+  },
+  "devDependencies": {
+    "@adamhl8/configs": "^0.23.9",
+    "@arethetypeswrong/core": "^0.18.4",
+    "@commitlint/cli": "^21.1.0",
+    "@commitlint/config-conventional": "^21.1.0",
+    "@types/node": "^26.0.1",
+    "@typescript-eslint/rule-tester": "^8.62.1",
+    "@vitest/coverage-v8": "^4.1.9",
+    "eslint": "^10.6.0",
+    "knip": "^6.23.0",
+    "markdown-toc": "^1.2.0",
+    "oxfmt": "^0.56.0",
+    "oxlint": "^1.71.0",
+    "oxlint-tsgolint": "^0.23.0",
+    "publint": "^0.3.21",
+    "release-it": "^20.2.1",
+    "tsdown": "^0.22.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.9"
+  }
+}

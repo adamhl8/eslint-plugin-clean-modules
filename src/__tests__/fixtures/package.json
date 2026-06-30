@@ -1,0 +1,7 @@
+{
+  "name": "oxlint-fixture",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  }
+}

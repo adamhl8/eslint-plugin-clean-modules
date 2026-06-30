@@ -1,0 +1,8 @@
+{
+  "name": "rule-fixtures",
+  "type": "module",
+  "imports": {
+    "#*": "./src/*",
+    "#utils/*": "./src/utils/*"
+  }
+}
