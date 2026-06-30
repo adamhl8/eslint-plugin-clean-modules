@@ -54,6 +54,37 @@ ruleTester.run("require-direct-exports", requireDirectExports, {
       errors: [{ messageId: "indirectExport" }],
     },
     {
+      code: "class C {}\nexport { C }",
+      filename,
+      output: "export class C {}\n",
+      errors: [{ messageId: "indirectExport" }],
+    },
+    {
+      // A decorated class can't gain `export` by prepending (it would land before the decorator).
+      code: "@dec\nclass C {}\nexport { C }",
+      filename,
+      errors: [{ messageId: "indirectExport" }],
+    },
+    {
+      // A name declared twice is ambiguous, so the export can't be safely inlined.
+      code: "function f() {}\nfunction f() {}\nexport { f }",
+      filename,
+      errors: [{ messageId: "indirectExport" }],
+    },
+    {
+      // A destructured binding has no single declaration to attach `export` to.
+      code: "const { a } = o\nexport { a }",
+      filename,
+      errors: [{ messageId: "indirectExport" }],
+    },
+    {
+      // A `module "..."` declaration has a string (not identifier) id, which is simply skipped.
+      code: `declare module "foo" {}\nconst a = 1\nexport { a }`,
+      filename,
+      output: `declare module "foo" {}\nexport const a = 1\n`,
+      errors: [{ messageId: "indirectExport" }],
+    },
+    {
       code: `export { a } from "./b"`,
       filename,
       errors: [{ messageId: "reexport" }],

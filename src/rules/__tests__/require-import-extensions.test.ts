@@ -4,6 +4,7 @@ import { FIXTURES, ruleTester } from "#/rules/__tests__/setup.ts"
 import { requireImportExtensions } from "#/rules/require-import-extensions.ts"
 
 const filename = path.join(FIXTURES, "src/foo.ts")
+const noImportsFile = path.join(FIXTURES, "no-imports/foo.ts")
 
 ruleTester.run("require-import-extensions", requireImportExtensions, {
   valid: [
@@ -11,6 +12,10 @@ ruleTester.run("require-import-extensions", requireImportExtensions, {
     { code: `import d from "./data.json"`, filename },
     { code: `import { helper } from "#utils/helper.ts"`, filename },
     { code: `import { fromDir } from "./dir-import"`, filename },
+    { code: `import fs from "node:fs"`, filename },
+    { code: "const a = 1\nexport { a }", filename },
+    // no imports map, so the subpath is unresolvable and left for require-subpath-imports
+    { code: `import { x } from "#foo"`, filename: noImportsFile },
   ],
   invalid: [
     {
@@ -53,6 +58,18 @@ ruleTester.run("require-import-extensions", requireImportExtensions, {
       code: `import { missing } from "./missing"`,
       filename,
       errors: [{ messageId: "targetNotFound" }],
+    },
+    {
+      code: `export { bar } from "./bar"`,
+      filename,
+      output: `export { bar } from "./bar.ts"`,
+      errors: [{ messageId: "wrongExtension" }],
+    },
+    {
+      code: `export * from "./bar"`,
+      filename,
+      output: `export * from "./bar.ts"`,
+      errors: [{ messageId: "wrongExtension" }],
     },
   ],
 })

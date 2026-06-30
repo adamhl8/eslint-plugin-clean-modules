@@ -4,6 +4,7 @@ import { FIXTURES, ruleTester } from "#/rules/__tests__/setup.ts"
 import { requireSubpathImports } from "#/rules/require-subpath-imports.ts"
 
 const filename = path.join(FIXTURES, "src/foo.ts")
+const noImportsFile = path.join(FIXTURES, "no-imports/foo.ts")
 
 ruleTester.run("require-subpath-imports", requireSubpathImports, {
   valid: [
@@ -11,6 +12,7 @@ ruleTester.run("require-subpath-imports", requireSubpathImports, {
     { code: `import fs from "node:fs"`, filename },
     { code: `import { x } from "some-pkg"`, filename },
     { code: `import { bar } from "./bar"`, filename, options: [{ ignore: ["bar"] }] },
+    { code: "const a = 1\nexport { a }", filename },
   ],
   invalid: [
     {
@@ -46,6 +48,11 @@ ruleTester.run("require-subpath-imports", requireSubpathImports, {
     {
       code: `import { outside } from "../../outside"`,
       filename,
+      errors: [{ messageId: "noSubpathMatch" }],
+    },
+    {
+      code: `import { bar } from "./bar"`,
+      filename: noImportsFile,
       errors: [{ messageId: "noSubpathMatch" }],
     },
   ],
