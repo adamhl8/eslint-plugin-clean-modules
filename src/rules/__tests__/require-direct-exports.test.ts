@@ -1,6 +1,5 @@
+import { ruleTester } from "#/rules/__tests__/setup.ts"
 import { requireDirectExports } from "#/rules/require-direct-exports.ts"
-
-import { ruleTester } from "./setup.ts"
 
 const filename = "file.ts"
 
