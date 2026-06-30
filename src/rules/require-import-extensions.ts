@@ -6,6 +6,7 @@ import type { TSESLint } from "@typescript-eslint/utils"
 
 import { loadImportsMap, subpathToAbs } from "#/shared/imports-map.ts"
 import {
+  findDirectoryIndex,
   findOnDiskExtension,
   isExistingDirectory,
   isRelativeSpecifier,
@@ -14,7 +15,7 @@ import {
   TS_EXTENSION_SLOTS,
 } from "#/shared/resolve.ts"
 
-type MessageIds = "targetNotFound" | "wrongExtension"
+type MessageIds = "directoryIndex" | "targetNotFound" | "wrongExtension"
 
 export const requireImportExtensions: TSESLint.RuleModule<MessageIds> = {
   meta: {
@@ -25,6 +26,7 @@ export const requireImportExtensions: TSESLint.RuleModule<MessageIds> = {
     messages: {
       wrongExtension: "Import '{{specifier}}' should use the file extension '{{expected}}'.",
       targetNotFound: "Import '{{specifier}}' could not be resolved on disk (looked for '{{lookup}}').",
+      directoryIndex: "Import '{{specifier}}' resolves to a directory; import its index file '{{index}}' explicitly.",
     },
   },
   create(context) {
@@ -47,7 +49,20 @@ export const requireImportExtensions: TSESLint.RuleModule<MessageIds> = {
 
       const newExt = findOnDiskExtension(abs)
       if (newExt === undefined) {
-        if (isExistingDirectory(abs)) return // directory/index import, out of scope
+        const indexAbs = findDirectoryIndex(abs)
+        if (indexAbs !== undefined) {
+          const sep = specifier.endsWith("/") ? "" : "/"
+          const newSpecifier = `${specifier}${sep}${path.basename(indexAbs)}`
+          const quote = source.raw[0] ?? '"'
+          context.report({
+            node: source,
+            messageId: "directoryIndex",
+            data: { specifier, index: newSpecifier },
+            fix: (fixer) => fixer.replaceText(source, `${quote}${newSpecifier}${quote}`),
+          })
+          return
+        }
+        if (isExistingDirectory(abs)) return // directory without an index file, out of scope
         const parsed = path.parse(abs)
         context.report({
           node: source,

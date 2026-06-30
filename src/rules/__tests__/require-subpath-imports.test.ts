@@ -12,6 +12,7 @@ ruleTester.run("require-subpath-imports", requireSubpathImports, {
     { code: `import fs from "node:fs"`, filename },
     { code: `import { x } from "some-pkg"`, filename },
     { code: `import { bar } from "./bar"`, filename, options: [{ ignore: ["bar"] }] },
+    { code: `import { x } from "."`, filename, options: [{ ignore: ["."] }] },
     { code: "const a = 1\nexport { a }", filename },
   ],
   invalid: [
@@ -44,6 +45,29 @@ ruleTester.run("require-subpath-imports", requireSubpathImports, {
       filename,
       output: `export * from "#bar"`,
       errors: [{ messageId: "relativeImport" }],
+    },
+    {
+      code: `import { x } from "."`,
+      filename,
+      output: `import { x } from "#index.ts"`,
+      errors: [{ messageId: "relativeImport" }],
+    },
+    {
+      code: `import { x } from "./"`,
+      filename,
+      output: `import { x } from "#index.ts"`,
+      errors: [{ messageId: "relativeImport" }],
+    },
+    {
+      code: `import { fromDir } from "./dir-import"`,
+      filename,
+      output: `import { fromDir } from "#dir-import/index.ts"`,
+      errors: [{ messageId: "relativeImport" }],
+    },
+    {
+      code: `import { x } from ".."`,
+      filename,
+      errors: [{ messageId: "noSubpathMatch" }],
     },
     {
       code: `import { outside } from "../../outside"`,

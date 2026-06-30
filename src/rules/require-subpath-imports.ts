@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from "@typescript-eslint/types"
 import type { TSESLint } from "@typescript-eslint/utils"
 
 import { absToSubpath, loadImportsMap } from "#/shared/imports-map.ts"
-import { isRelativeSpecifier } from "#/shared/resolve.ts"
+import { findDirectoryIndex, isRelativeSpecifier } from "#/shared/resolve.ts"
 
 type Options = readonly [{ ignore?: string[] }?]
 type MessageIds = "noSubpathMatch" | "relativeImport"
@@ -39,7 +39,8 @@ export const requireSubpathImports: TSESLint.RuleModule<MessageIds, Options> = {
 
       const map = loadImportsMap(context.filename)
       const abs = path.resolve(path.dirname(context.filename), specifier)
-      const subpath = map ? absToSubpath(abs, map) : undefined
+      const resolved = findDirectoryIndex(abs) ?? abs
+      const subpath = map ? absToSubpath(resolved, map) : undefined
 
       if (subpath === undefined) {
         context.report({ node: source, messageId: "noSubpathMatch", data: { specifier } })

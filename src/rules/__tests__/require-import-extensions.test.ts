@@ -11,7 +11,8 @@ ruleTester.run("require-import-extensions", requireImportExtensions, {
     { code: `import { bar } from "./bar.ts"`, filename },
     { code: `import d from "./data.json"`, filename },
     { code: `import { helper } from "#utils/helper.ts"`, filename },
-    { code: `import { fromDir } from "./dir-import"`, filename },
+    { code: `import { fromDir } from "./dir-import/index.ts"`, filename },
+    { code: `import { helper } from "./utils"`, filename }, // directory with no index file, left alone
     { code: `import fs from "node:fs"`, filename },
     { code: "const a = 1\nexport { a }", filename },
     // no imports map, so the subpath is unresolvable and left for require-subpath-imports
@@ -53,6 +54,24 @@ ruleTester.run("require-import-extensions", requireImportExtensions, {
       filename,
       output: `const m = import("./bar.ts")`,
       errors: [{ messageId: "wrongExtension" }],
+    },
+    {
+      code: `import { fromDir } from "./dir-import"`,
+      filename,
+      output: `import { fromDir } from "./dir-import/index.ts"`,
+      errors: [{ messageId: "directoryIndex" }],
+    },
+    {
+      code: `import { fromDir } from "#dir-import"`,
+      filename,
+      output: `import { fromDir } from "#dir-import/index.ts"`,
+      errors: [{ messageId: "directoryIndex" }],
+    },
+    {
+      code: `import { fromDir } from "./dir-import/"`,
+      filename,
+      output: `import { fromDir } from "./dir-import/index.ts"`,
+      errors: [{ messageId: "directoryIndex" }],
     },
     {
       code: `import { missing } from "./missing"`,

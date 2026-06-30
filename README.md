@@ -50,9 +50,9 @@ Run `oxlint --fix` to apply fixes. Because `require-subpath-imports` and `requir
 
 ### `require-subpath-imports`
 
-Relative imports (`./`, `../`) are banned. Imports of modules within the same package should use a native Node.js subpath import, defined by the `imports` field in `package.json`.
+Relative imports (`.`, `..`, `./`, `../`) are banned. Imports of modules within the same package should use a native Node.js subpath import, defined by the `imports` field in `package.json`.
 
-The fix resolves the relative import to the matching `#` subpath. If no subpath entry matches, the import is reported without a fix.
+The fix resolves the relative import to the matching `#` subpath. A directory import resolves to the directory's `index` file (`index.ts`, `index.tsx`, or `index.d.ts`), since ESM has no directory resolution. If no subpath entry matches, the import is reported without a fix.
 
 ```jsonc
 // package.json
@@ -62,6 +62,9 @@ The fix resolves the relative import to the matching `#` subpath. If no subpath 
 ```ts
 import { foo } from "./foo" // error
 import { foo } from "#foo" // autofixed
+
+import { foo } from "." // error (directory import)
+import { foo } from "#index.ts" // autofixed
 ```
 
 Applies to `import`, dynamic `import()`, `export ... from`, and `export *`.
@@ -95,7 +98,7 @@ export const foo = 1 // autofixed
 
 ### `require-import-extensions`
 
-Local imports (relative and `#` subpath) must use the correct file extension as it exists on disk (`.ts`, `.tsx`, or `.d.ts`). Extensions are resolved by checking the filesystem, following [TypeScript's extension substitution](https://www.typescriptlang.org/docs/handbook/modules/reference.html#file-extension-substitution). Non-TypeScript extensions (`.json`, `.css`, ...) pass through unchanged. If the target file can't be found, the import is reported without a fix.
+Local imports (relative and `#` subpath) must use the correct file extension as it exists on disk (`.ts`, `.tsx`, or `.d.ts`). Extensions are resolved by checking the filesystem, following [TypeScript's extension substitution](https://www.typescriptlang.org/docs/handbook/modules/reference.html#file-extension-substitution). Non-TypeScript extensions (`.json`, `.css`, ...) pass through unchanged. A directory import is rewritten to its explicit `index` file (e.g. `./dir` -> `./dir/index.ts`); a directory with no `index.{ts,tsx,d.ts}` is reported without a fix. If the target file can't be found, the import is reported without a fix.
 
 ```ts
 import { foo } from "./foo" // error (foo.ts on disk)

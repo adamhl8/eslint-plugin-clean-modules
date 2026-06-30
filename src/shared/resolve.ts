@@ -7,7 +7,7 @@ export const TS_EXTENSION_SLOTS = ["", ".js", ".jsx", ".ts", ".tsx"]
 export const ALLOWED_EXTENSIONS = [".ts", ".tsx", ".d.ts"]
 
 export const isRelativeSpecifier = (specifier: string): boolean =>
-  specifier.startsWith("./") || specifier.startsWith("../")
+  specifier === "." || specifier === ".." || specifier.startsWith("./") || specifier.startsWith("../")
 
 export const isSubpathSpecifier = (specifier: string): boolean => specifier.startsWith("#")
 
@@ -31,4 +31,14 @@ export const isExistingDirectory = (absPath: string): boolean => {
   } catch {
     return false
   }
+}
+
+/** Abs path to `absPath`'s on-disk `index` file if `absPath` is a directory containing one, else undefined. */
+export const findDirectoryIndex = (absPath: string): string | undefined => {
+  if (!isExistingDirectory(absPath)) return undefined
+  for (const ext of ALLOWED_EXTENSIONS) {
+    const candidate = path.join(absPath, `index${ext}`)
+    if (fs.existsSync(candidate)) return candidate
+  }
+  return undefined
 }

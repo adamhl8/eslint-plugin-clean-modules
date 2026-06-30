@@ -58,4 +58,8 @@ describe("quote fallback when source.raw is empty", () => {
   it("defaults require-import-extensions to double quotes", () => {
     expect(firstFixText(requireImportExtensions, "./bar")).toBe(`"./bar.ts"`)
   })
+
+  it("defaults require-import-extensions directory index to double quotes", () => {
+    expect(firstFixText(requireImportExtensions, "./dir-import")).toBe(`"./dir-import/index.ts"`)
+  })
 })
