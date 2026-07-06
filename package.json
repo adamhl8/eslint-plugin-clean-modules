@@ -7,7 +7,7 @@
     "eslint-plugin",
     "lint",
     "oxlint",
-    "subpath imports"
+    "subpath-imports"
   ],
   "homepage": "https://github.com/adamhl8/eslint-plugin-clean-modules",
   "bugs": {
@@ -40,28 +40,22 @@
     "access": "public"
   },
   "scripts": {
-    "lint": "markdown-toc -i --bullets '-' --maxdepth 3 ./README.md && oxfmt && oxlint --fix --fix-suggestions --fix-dangerously && adamhl8-knip && nub run test",
-    "test": "vitest run",
-    "bump-deps": "nub update -L && rm -f lock.yaml && nub i && oxfmt lock.yaml",
-    "bundle": "nub run lint && tsdown",
-    "release": "gh workflow run release.yml",
-    "release:run": "release-it --ci -i \"$(adamhl8-cliff --bumped-version)\"",
-    "prepare": "lefthook install"
+    "prepare": "just prepare"
   },
   "dependencies": {
-    "@typescript-eslint/types": "^8.62.1",
-    "@typescript-eslint/utils": "^8.62.1"
+    "@typescript-eslint/types": "^8.63.0",
+    "@typescript-eslint/utils": "^8.63.0"
   },
   "devDependencies": {
-    "@adamhl8/configs": "^0.24.5",
+    "@adamhl8/configs": "^0.36.0",
     "@arethetypeswrong/core": "^0.18.4",
     "@commitlint/cli": "^21.2.0",
     "@commitlint/config-conventional": "^21.2.0",
-    "@types/node": "^26.0.1",
-    "@typescript-eslint/rule-tester": "^8.62.1",
-    "@vitest/coverage-v8": "^4.1.9",
+    "@types/node": "^26.1.0",
+    "@typescript-eslint/rule-tester": "^8.63.0",
+    "@vitest/coverage-v8": "^4.1.10",
     "eslint": "^10.6.0",
-    "knip": "^6.23.0",
+    "knip": "^6.24.0",
     "markdown-toc": "^1.2.0",
     "oxfmt": "^0.57.0",
     "oxlint": "^1.72.0",
@@ -70,6 +64,6 @@
     "release-it": "^20.2.1",
     "tsdown": "^0.22.3",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.9"
+    "vitest": "^4.1.10"
   }
 }
