@@ -1,9 +1,9 @@
-import { RuleTester } from "@typescript-eslint/rule-tester"
-import { afterAll, describe, it } from "vitest"
+import { afterAll, describe, it } from "bun:test"
 
-// vitest doesn't expose these as globals, so give the rule tester the hooks it needs.
+import { RuleTester } from "@typescript-eslint/rule-tester"
+
+// Wire bun:test's hooks onto RuleTester explicitly instead of relying on globals.
 RuleTester.afterAll = afterAll
-// oxlint-disable-next-line typescript/strict-void-return - vitest's `describe` returns a value where the hook setter expects a void return
 RuleTester.describe = describe
 RuleTester.it = it
 RuleTester.itOnly = it.only

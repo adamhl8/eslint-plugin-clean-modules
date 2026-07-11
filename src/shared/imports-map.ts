@@ -28,7 +28,7 @@ const pkgCache = new Map<string, ImportsMap | undefined>()
 const isRecord = (value: unknown): value is Record<string, unknown> => value !== null && typeof value === "object"
 
 const findPackageJson = (startDir: string): string | undefined => {
-  for (let dir = startDir; ; ) {
+  for (let dir = startDir; ;) {
     const candidate = path.join(dir, "package.json")
     if (fs.existsSync(candidate)) return candidate
     const parent = path.dirname(dir)

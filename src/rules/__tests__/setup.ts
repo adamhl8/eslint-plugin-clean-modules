@@ -6,4 +6,4 @@ export const ruleTester = new RuleTester({
   languageOptions: { ecmaVersion: "latest", sourceType: "module" },
 })
 
-export const FIXTURES = path.join(import.meta.dirname, "fixtures")
+export const FIXTURES = path.join(import.meta.dir, "fixtures")

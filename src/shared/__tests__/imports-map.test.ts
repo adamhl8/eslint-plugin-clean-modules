@@ -1,12 +1,11 @@
+import { describe, expect, it } from "bun:test"
 import os from "node:os"
 import path from "node:path"
 
-import { describe, expect, it } from "vitest"
+import type { ImportsMap } from "#shared/imports-map.ts"
+import { absToSubpath, loadImportsMap, subpathToAbs } from "#shared/imports-map.ts"
 
-import type { ImportsMap } from "#/shared/imports-map.ts"
-import { absToSubpath, loadImportsMap, subpathToAbs } from "#/shared/imports-map.ts"
-
-const FIXTURES = path.join(import.meta.dirname, "fixtures")
+const FIXTURES = path.join(import.meta.dir, "fixtures")
 const richDir = path.join(FIXTURES, "rich")
 const tiebreakDir = path.join(FIXTURES, "tiebreak")
 const orderDir = path.join(FIXTURES, "order")

@@ -4,7 +4,7 @@ import type { TSESTree } from "@typescript-eslint/types"
 import { AST_NODE_TYPES } from "@typescript-eslint/types"
 import type { TSESLint } from "@typescript-eslint/utils"
 
-import { loadImportsMap, subpathToAbs } from "#/shared/imports-map.ts"
+import { loadImportsMap, subpathToAbs } from "#shared/imports-map.ts"
 import {
   findDirectoryIndex,
   findOnDiskExtension,
@@ -13,7 +13,7 @@ import {
   isSubpathSpecifier,
   resolveRelative,
   TS_EXTENSION_SLOTS,
-} from "#/shared/resolve.ts"
+} from "#shared/resolve.ts"
 
 type MessageIds = "directoryIndex" | "targetNotFound" | "wrongExtension"
 

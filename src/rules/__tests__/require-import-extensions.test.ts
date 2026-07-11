@@ -1,7 +1,7 @@
 import path from "node:path"
 
-import { FIXTURES, ruleTester } from "#/rules/__tests__/setup.ts"
-import { requireImportExtensions } from "#/rules/require-import-extensions.ts"
+import { FIXTURES, ruleTester } from "#rules/__tests__/setup.ts"
+import { requireImportExtensions } from "#rules/require-import-extensions.ts"
 
 const filename = path.join(FIXTURES, "src/foo.ts")
 const noImportsFile = path.join(FIXTURES, "no-imports/foo.ts")

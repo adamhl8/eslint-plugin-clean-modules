@@ -1,7 +1,7 @@
 import path from "node:path"
 
-import { FIXTURES, ruleTester } from "#/rules/__tests__/setup.ts"
-import { requireSubpathImports } from "#/rules/require-subpath-imports.ts"
+import { FIXTURES, ruleTester } from "#rules/__tests__/setup.ts"
+import { requireSubpathImports } from "#rules/require-subpath-imports.ts"
 
 const filename = path.join(FIXTURES, "src/foo.ts")
 const noImportsFile = path.join(FIXTURES, "no-imports/foo.ts")

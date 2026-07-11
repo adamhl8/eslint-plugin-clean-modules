@@ -1,6 +1,6 @@
-import { describe, expect, it } from "vitest"
+import { describe, expect, it } from "bun:test"
 
-import plugin from "#/index.ts"
+import plugin from "#index.ts"
 
 describe("plugin", () => {
   it("exposes the three rules under the clean-modules name", () => {

@@ -1,12 +1,12 @@
+import { describe, expect, it } from "bun:test"
 import path from "node:path"
 
 import { AST_NODE_TYPES } from "@typescript-eslint/types"
 import type { TSESLint, TSESTree } from "@typescript-eslint/utils"
-import { describe, expect, it } from "vitest"
 
-import { FIXTURES } from "#/rules/__tests__/setup.ts"
-import { requireImportExtensions } from "#/rules/require-import-extensions.ts"
-import { requireSubpathImports } from "#/rules/require-subpath-imports.ts"
+import { FIXTURES } from "#rules/__tests__/setup.ts"
+import { requireImportExtensions } from "#rules/require-import-extensions.ts"
+import { requireSubpathImports } from "#rules/require-subpath-imports.ts"
 
 const filename = path.join(FIXTURES, "src/foo.ts")
 

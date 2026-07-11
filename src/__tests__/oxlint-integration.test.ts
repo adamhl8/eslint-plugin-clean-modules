@@ -1,40 +1,29 @@
-import { execFileSync } from "node:child_process"
-import fs from "node:fs/promises"
+import { afterAll, beforeAll, describe, expect, it } from "bun:test"
 import os from "node:os"
 import path from "node:path"
 
-import { afterAll, beforeAll, describe, expect, it } from "vitest"
+import { $ } from "bun"
 
-const ROOT = path.resolve(import.meta.dirname, "../..")
-const FIXTURE = path.join(import.meta.dirname, "fixtures")
+const ROOT = path.resolve(import.meta.dir, "../..")
+const FIXTURE = path.join(import.meta.dir, "fixtures")
 const PLUGIN = path.join(ROOT, "dist/index.js")
 const TMP = path.join(os.tmpdir(), "eslint-plugin-clean-modules-oxlint-fixture")
 const OXLINT_BIN = path.join(ROOT, "node_modules/.bin/oxlint")
 const TSDOWN_BIN = path.join(ROOT, "node_modules/.bin/tsdown")
 
-/** Combined stdout+stderr of a finished or failed child process, read without unsafe assertions. */
-const collectOutput = (value: unknown): string => {
-  if (value === null || typeof value !== "object") return ""
-  const stdout = "stdout" in value && typeof value.stdout === "string" ? value.stdout : ""
-  const stderr = "stderr" in value && typeof value.stderr === "string" ? value.stderr : ""
-  return stdout + stderr
-}
-
-// oxlint exits non-zero when it finds problems, which rejects the promise; read its output either way.
+// oxlint exits non-zero when it finds problems; read its combined output regardless of exit code.
 const runOxlint = (fix: boolean): string => {
-  try {
-    return collectOutput(execFileSync(OXLINT_BIN, fix ? ["--fix"] : [], { cwd: TMP, encoding: "utf8" }))
-  } catch (error) {
-    return collectOutput(error)
-  }
+  const result = Bun.spawnSync([OXLINT_BIN, ...(fix ? ["--fix"] : [])], { cwd: TMP })
+  return result.stdout.toString() + result.stderr.toString()
 }
 
 describe("oxlint integration", () => {
   beforeAll(async () => {
     // oxlint loads the built JS plugin, so build before linting.
-    execFileSync(TSDOWN_BIN, [], { cwd: ROOT })
-    await fs.rm(TMP, { recursive: true, force: true })
-    await fs.cp(FIXTURE, TMP, { recursive: true })
+    const build = Bun.spawnSync([TSDOWN_BIN], { cwd: ROOT })
+    if (!build.success) throw new Error(`tsdown build failed:\n${build.stderr.toString()}`)
+    await $`rm -rf ${TMP}`.quiet()
+    await $`cp -R ${FIXTURE} ${TMP}`.quiet()
     // Point oxlint at the freshly built plugin by absolute path.
     const config = {
       jsPlugins: [PLUGIN],
@@ -44,11 +33,11 @@ describe("oxlint integration", () => {
         "clean-modules/require-import-extensions": "error",
       },
     }
-    await fs.writeFile(path.join(TMP, ".oxlintrc.json"), JSON.stringify(config, undefined, 2))
+    await Bun.write(path.join(TMP, ".oxlintrc.json"), JSON.stringify(config, undefined, 2))
   })
 
   afterAll(async () => {
-    await fs.rm(TMP, { recursive: true, force: true })
+    await $`rm -rf ${TMP}`.quiet()
   })
 
   it("reports all three rules", () => {
@@ -66,8 +55,8 @@ describe("oxlint integration", () => {
     runOxlint(true)
     runOxlint(true)
 
-    const main = await fs.readFile(path.join(TMP, "src/main.ts"), "utf8")
-    const helper = await fs.readFile(path.join(TMP, "src/helper.ts"), "utf8")
+    const main = await Bun.file(path.join(TMP, "src/main.ts")).text()
+    const helper = await Bun.file(path.join(TMP, "src/helper.ts")).text()
 
     expect(main).toContain('from "#helper.ts"')
     expect(helper).toContain("export const value = 1")

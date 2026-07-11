@@ -2,11 +2,10 @@ import { knipConfig } from "@adamhl8/configs"
 
 const config = knipConfig(
   {
-    project: ["**.*", "!src/**/fixtures/**", "!src/test-setup.ts"],
-    // These shared types/consts are used within their own file and surface in the unbundled dist
-    // .d.ts files, so they must stay exported even though no other module imports them by name.
+    project: ["**/*", "!src/**/fixtures/**"],
+    // Shared consts are used only within their own file but stay exported as part of the package surface.
     ignoreExportsUsedInFile: true,
-    ignoreDependencies: [""],
+    ignoreDependencies: ["@typescript/native-preview"],
   },
   { arrays: "replace" },
 )

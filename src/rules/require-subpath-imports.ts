@@ -4,8 +4,8 @@ import type { TSESTree } from "@typescript-eslint/types"
 import { AST_NODE_TYPES } from "@typescript-eslint/types"
 import type { TSESLint } from "@typescript-eslint/utils"
 
-import { absToSubpath, loadImportsMap } from "#/shared/imports-map.ts"
-import { findDirectoryIndex, isRelativeSpecifier } from "#/shared/resolve.ts"
+import { absToSubpath, loadImportsMap } from "#shared/imports-map.ts"
+import { findDirectoryIndex, isRelativeSpecifier } from "#shared/resolve.ts"
 
 type Options = readonly [{ ignore?: string[] }?]
 type MessageIds = "noSubpathMatch" | "relativeImport"
