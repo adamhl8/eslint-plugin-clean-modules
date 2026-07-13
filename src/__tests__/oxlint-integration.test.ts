@@ -2,7 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from "bun:test"
 import os from "node:os"
 import path from "node:path"
 
-import { $ } from "bun"
+import bun, { $, spawnSync } from "bun"
 
 const ROOT = path.resolve(import.meta.dir, "../..")
 const FIXTURE = path.join(import.meta.dir, "fixtures")
@@ -13,14 +13,14 @@ const TSDOWN_BIN = path.join(ROOT, "node_modules/.bin/tsdown")
 
 // oxlint exits non-zero when it finds problems; read its combined output regardless of exit code.
 const runOxlint = (fix: boolean): string => {
-  const result = Bun.spawnSync([OXLINT_BIN, ...(fix ? ["--fix"] : [])], { cwd: TMP })
+  const result = spawnSync([OXLINT_BIN, ...(fix ? ["--fix"] : [])], { cwd: TMP })
   return result.stdout.toString() + result.stderr.toString()
 }
 
 describe("oxlint integration", () => {
   beforeAll(async () => {
     // oxlint loads the built JS plugin, so build before linting.
-    const build = Bun.spawnSync([TSDOWN_BIN], { cwd: ROOT })
+    const build = spawnSync([TSDOWN_BIN], { cwd: ROOT })
     if (!build.success) throw new Error(`tsdown build failed:\n${build.stderr.toString()}`)
     await $`rm -rf ${TMP}`.quiet()
     await $`cp -R ${FIXTURE} ${TMP}`.quiet()
@@ -33,7 +33,7 @@ describe("oxlint integration", () => {
         "clean-modules/require-import-extensions": "error",
       },
     }
-    await Bun.write(path.join(TMP, ".oxlintrc.json"), JSON.stringify(config, undefined, 2))
+    await bun.write(path.join(TMP, ".oxlintrc.json"), JSON.stringify(config, undefined, 2))
   })
 
   afterAll(async () => {
@@ -55,8 +55,8 @@ describe("oxlint integration", () => {
     runOxlint(true)
     runOxlint(true)
 
-    const main = await Bun.file(path.join(TMP, "src/main.ts")).text()
-    const helper = await Bun.file(path.join(TMP, "src/helper.ts")).text()
+    const main = await bun.file(path.join(TMP, "src/main.ts")).text()
+    const helper = await bun.file(path.join(TMP, "src/helper.ts")).text()
 
     expect(main).toContain('from "#helper.ts"')
     expect(helper).toContain("export const value = 1")
