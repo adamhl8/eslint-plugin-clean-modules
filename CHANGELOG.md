@@ -1,3 +1,11 @@
+## [0.1.6](https://github.com/adamhl8/eslint-plugin-clean-modules/compare/v0.1.5..v0.1.6) - 2026-10-26
+
+### ⚙️ Miscellaneous Tasks
+
+- _(deps)_ update dependencies ([44d8871](https://github.com/adamhl8/eslint-plugin-clean-modules/commit/44d8871431e220bf6f5a4638aa95e79c349e849c) by @adamhl8)
+
+- _(tsdown)_ remove failOnWarn override ([0fe59e2](https://github.com/adamhl8/eslint-plugin-clean-modules/commit/0fe59e29d149629416c1b4c90fba2327832cb37f) by @adamhl8)
+
 ## [0.1.5](https://github.com/adamhl8/eslint-plugin-clean-modules/compare/v0.1.4..v0.1.5) - 2026-07-13
 
 ### ⚙️ Miscellaneous Tasks
