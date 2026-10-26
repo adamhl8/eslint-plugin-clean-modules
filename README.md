@@ -59,6 +59,7 @@ The fix resolves the relative import to the matching `#` subpath. A directory im
 { "imports": { "#*": "./src/*" } }
 ```
 
+<!-- oxfmt-ignore -->
 ```ts
 import { foo } from "./foo" // error
 import { foo } from "#foo" // autofixed

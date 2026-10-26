@@ -140,9 +140,9 @@ export const absToSubpath = (absPath: string, map: ImportsMap): string | undefin
     let specifier: string | undefined
     if (entry.hasStar) {
       if (
-        absPath.length >= entry.targetPrefix.length + entry.targetSuffix.length &&
-        absPath.startsWith(entry.targetPrefix) &&
-        absPath.endsWith(entry.targetSuffix)
+        absPath.length >= entry.targetPrefix.length + entry.targetSuffix.length
+        && absPath.startsWith(entry.targetPrefix)
+        && absPath.endsWith(entry.targetSuffix)
       ) {
         const mid = absPath.slice(entry.targetPrefix.length, absPath.length - entry.targetSuffix.length)
         specifier = entry.keyPrefix + toPosix(mid) + entry.keySuffix
@@ -151,9 +151,9 @@ export const absToSubpath = (absPath: string, map: ImportsMap): string | undefin
 
     if (specifier === undefined) continue
     if (
-      !best ||
-      entry.targetPrefix.length > best.prefixLen ||
-      (entry.targetPrefix.length === best.prefixLen && entry.targetSuffix.length > best.suffixLen)
+      !best
+      || entry.targetPrefix.length > best.prefixLen
+      || (entry.targetPrefix.length === best.prefixLen && entry.targetSuffix.length > best.suffixLen)
     )
       best = { specifier, prefixLen: entry.targetPrefix.length, suffixLen: entry.targetSuffix.length }
   }
@@ -167,9 +167,9 @@ export const subpathToAbs = (specifier: string, map: ImportsMap): string | undef
     let abs: string | undefined
     if (entry.hasStar) {
       if (
-        specifier.length >= entry.keyPrefix.length + entry.keySuffix.length &&
-        specifier.startsWith(entry.keyPrefix) &&
-        specifier.endsWith(entry.keySuffix)
+        specifier.length >= entry.keyPrefix.length + entry.keySuffix.length
+        && specifier.startsWith(entry.keyPrefix)
+        && specifier.endsWith(entry.keySuffix)
       ) {
         const mid = specifier.slice(entry.keyPrefix.length, specifier.length - entry.keySuffix.length)
         abs = entry.targetPrefix + fromPosix(mid) + entry.targetSuffix
@@ -178,9 +178,9 @@ export const subpathToAbs = (specifier: string, map: ImportsMap): string | undef
 
     if (abs === undefined) continue
     if (
-      !best ||
-      entry.keyPrefix.length > best.prefixLen ||
-      (entry.keyPrefix.length === best.prefixLen && entry.keySuffix.length > best.suffixLen)
+      !best
+      || entry.keyPrefix.length > best.prefixLen
+      || (entry.keyPrefix.length === best.prefixLen && entry.keySuffix.length > best.suffixLen)
     )
       best = { abs, prefixLen: entry.keyPrefix.length, suffixLen: entry.keySuffix.length }
   }

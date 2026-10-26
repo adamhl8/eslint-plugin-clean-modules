@@ -39,10 +39,10 @@ const buildDeclMap = (program: TSESTree.Program): Map<string, DeclInfo> => {
       continue
     }
     if (
-      stmt.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
-      stmt.type === AST_NODE_TYPES.TSTypeAliasDeclaration ||
-      stmt.type === AST_NODE_TYPES.TSEnumDeclaration ||
-      stmt.type === AST_NODE_TYPES.TSModuleDeclaration
+      stmt.type === AST_NODE_TYPES.TSInterfaceDeclaration
+      || stmt.type === AST_NODE_TYPES.TSTypeAliasDeclaration
+      || stmt.type === AST_NODE_TYPES.TSEnumDeclaration
+      || stmt.type === AST_NODE_TYPES.TSModuleDeclaration
     ) {
       if (stmt.id.type === AST_NODE_TYPES.Identifier) add(stmt.id.name, stmt, true)
       continue

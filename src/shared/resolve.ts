@@ -4,7 +4,7 @@ import path from "node:path"
 // https://www.typescriptlang.org/docs/handbook/modules/reference.html#file-extension-substitution
 // An import with any of these extensions (or none) can resolve to a real TS file.
 export const TS_EXTENSION_SLOTS = ["", ".js", ".jsx", ".ts", ".tsx"]
-export const ALLOWED_EXTENSIONS = [".ts", ".tsx", ".d.ts"]
+const ALLOWED_EXTENSIONS = [".ts", ".tsx", ".d.ts"]
 
 export const isRelativeSpecifier = (specifier: string): boolean =>
   specifier === "." || specifier === ".." || specifier.startsWith("./") || specifier.startsWith("../")
@@ -26,8 +26,9 @@ export const findOnDiskExtension = (absPath: string): string | undefined => {
 }
 
 export const isExistingDirectory = (absPath: string): boolean => {
+  // Keep the `catch` because `statSync` still throws on errors like EACCES, and on ENOTDIR under bun.
   try {
-    return fs.statSync(absPath).isDirectory()
+    return fs.statSync(absPath, { throwIfNoEntry: false })?.isDirectory() ?? false
   } catch {
     return false
   }

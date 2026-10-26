@@ -12,5 +12,5 @@ const plugin = {
   },
 }
 
-// oxlint-disable-next-line import/no-default-export
+// oxlint-disable-next-line import/no-default-export - oxlint and ESLint load a plugin from its default export
 export default plugin

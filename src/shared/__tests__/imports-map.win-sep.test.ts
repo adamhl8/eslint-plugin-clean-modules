@@ -1,12 +1,14 @@
 import { describe, expect, it, mock } from "bun:test"
-import path from "node:path"
-
-import { absToSubpath, loadImportsMap, subpathToAbs } from "#shared/imports-map.ts"
+import posixPath from "node:path/posix"
 
 // Force the non-POSIX `path.sep` so toPosix/fromPosix take their Windows branch. The path
 // functions don't read the `sep` property, so resolve/join/dirname keep working as POSIX here.
-const actualPath = { ...path }
-void mock.module("node:path", () => ({ ...actualPath, sep: "\\", default: { ...actualPath, sep: "\\" } }))
+const mockedPath = { ...posixPath, sep: "\\" }
+void mock.module("node:path", () => ({ ...mockedPath, default: mockedPath }))
+
+// Import after the mock so `imports-map.ts` and this file both get the mocked `node:path`.
+const { default: path } = await import("node:path")
+const { absToSubpath, loadImportsMap, subpathToAbs } = await import("#shared/imports-map.ts")
 
 const richDir = path.join(import.meta.dir, "fixtures", "rich")
 const map = loadImportsMap(path.join(richDir, "src/foo.ts"))
